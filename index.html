@@ -22,7 +22,7 @@
     <link rel="stylesheet" href="css/leaflet-measure.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css"/>
 
-<style>
+    <style>
         * {
             margin: 0;
             padding: 0;
@@ -178,26 +178,33 @@
             box-shadow: 0 6px 15px rgba(108, 117, 125, 0.3);
         }
         
-        #map {
+        .map-container {
             height: 550px;
             border-radius: 12px;
             overflow: hidden;
             border: 3px solid #e8f5e9;
         }
         
+        .table-container {
+            overflow-x: auto;
+            max-height: 500px;
+            overflow-y: auto;
+            margin-top: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 15px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            border-radius: 8px;
-            overflow: hidden;
+            min-width: 800px;
         }
         
         th, td {
             padding: 15px;
             text-align: left;
             border-bottom: 1px solid #f0f0f0;
+            white-space: nowrap;
         }
         
         th {
@@ -205,6 +212,9 @@
             color: white;
             font-weight: 600;
             font-size: 15px;
+            position: sticky;
+            top: 0;
+            z-index: 10;
         }
         
         tr:nth-child(even) {
@@ -436,6 +446,27 @@
             .search-type-toggle {
                 flex-direction: column;
             }
+            
+            .table-container {
+                max-height: 400px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .table-container {
+                max-height: 350px;
+            }
+            
+            th, td {
+                padding: 10px 8px;
+                font-size: 14px;
+            }
+            
+            .status-badge {
+                min-width: 100px;
+                padding: 6px 12px;
+                font-size: 12px;
+            }
         }
     </style>
 </head>
@@ -578,7 +609,7 @@
                 <div class="card-header">
                     <h3 class="card-title"><i class="fas fa-map-marked-alt"></i> Mapa de Empreendimentos</h3>
                 </div>
-                <div id="map"></div>
+                <div class="map-container" id="map"></div>
                 <div class="legend">
                     <div class="legend-item">
                         <div class="legend-color" style="background-color: #2ecc71;"></div>
@@ -605,7 +636,7 @@
                 <h3 class="card-title"><i class="fas fa-list-ul"></i> Empreendimentos Encontrados</h3>
                 <span id="results-count">0 resultados</span>
             </div>
-            <div style="overflow-x: auto;">
+            <div class="table-container">
                 <table>
                     <thead>
                         <tr>
@@ -683,15 +714,10 @@
                 maxZoom:28, 
                 minZoom:6
             }).fitBounds([[-10.612797174589554,-60.008087739307456],[2.488037768410446,-44.88672601405379]]);
-
-
             
             var hash = new L.Hash(map);
             map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
             var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
-
-
-
             
             // remove popup's row if "visible-with-data"
             function removeEmptyRowsFromPopupContent(content, feature) {
@@ -708,13 +734,6 @@
                 return tempDiv.innerHTML;
             }
             
-	        // Add the ZoomBar control..
-	            var zoom_bar = new L.Control.ZoomBar({position: 'topleft'}).addTo(map);
-	        // Add scalebar
-	        var scale = L.control.scale()
-	            scale.addTo(map)
-
-
             // add class to format popup if it contains media
             function addClassToPopupIfMedia(content, popup) {
                 var tempDiv = document.createElement('div');
@@ -729,7 +748,7 @@
                     popup._contentNode.classList.remove('media');
                 }
             }
-            /*
+            
             var title = new L.Control({'position':'topleft'});
             title.onAdd = function (map) {
                 this._div = L.DomUtil.create('div', 'info');
@@ -737,7 +756,7 @@
                 return this._div;
             };
             title.update = function () {
-                this._div.innerHTML = '<h2>-DLA-Semas</h2>';
+                this._div.innerHTML = '<h2>-Licenciamento Ambiental - Estado do Pará-</h2>';
             };
             title.addTo(map);
             
@@ -748,17 +767,17 @@
                 abstract.show();
                 return this._div;
             };
-           abstract.show = function () {
+            abstract.show = function () {
                 this._div.classList.remove("abstract");
                 this._div.classList.add("abstractUncollapsed");
                 this._div.innerHTML = 'DISTRIBUTION OF MINING LICENSING IN THE STATE OF PARÁ<br />Application, Research and Mining.';
             };
             abstract.addTo(map);
-        
+            
             var zoomControl = L.control.zoom({
                 position: 'topleft'
             }).addTo(map);
-                */
+            
             var measureControl = new L.Control.Measure({
                 position: 'topleft',
                 primaryLengthUnit: 'meters',
@@ -815,8 +834,7 @@
                 maxNativeZoom: 19
             });
             
-            // Funções e camadas das áreas temáticas
-            // [Código das funções pop_ e style_ para cada camada permanece igual...]
+            // [Todas as funções das camadas temáticas permanecem aqui...]
             // UC Municipal MMA
             function pop_UCMunicipalMMA_3(feature, layer) {
                 layer.on({
@@ -1709,6 +1727,10 @@
 
         // Funções do aplicativo de licenciamento
         function initializeLicensingApp() {
+            // [Todo o código JavaScript do aplicativo de licenciamento permanece aqui...]
+            // Funções de conversão de coordenadas, upload de CSV, busca, etc.
+            // ... (o código JavaScript permanece exatamente o mesmo da versão anterior)
+            
             // Funções de conversão de coordenadas
             function gmsToDecimal(degrees, minutes, seconds, direction) {
                 const decimal = Math.abs(degrees) + minutes / 60 + seconds / 3600;
