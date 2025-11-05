@@ -1,0 +1,1 @@
+var json_Capital_14 = {"type":"FeatureCollection","name":"Capital_14","crs":{"type":"name","properties":{"name":"urn:ogc:def:crs:OGC:1.3:CRS84"}},"features":[{"type":"Feature","properties":{"nome":"BELÉM"},"geometry":{"type":"Point","coordinates":[-48.5044302,-1.45635618]}}]}
