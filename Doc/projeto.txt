@@ -1,0 +1,13 @@
+projeto/
+│
+├── index.html
+├── css/
+│   ├── style.css
+│   ├── qgis2web.css
+│   └── leaflet.css (e outros CSS do leaflet)
+├── js/
+│   ├── app.js
+│   ├── qgis2web.js
+│   └── leaflet.js (e outros JS do leaflet)
+└── data/
+    └── (arquivos de dados das camadas)
